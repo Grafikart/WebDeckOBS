@@ -52,8 +52,11 @@ export class OBSWebsocket extends EventEmitter {
   on<K extends keyof OBSWebsocketResponses>(
     name: K,
     callback: (data: OBSWebsocketResponses[K]) => void
-  ) {
+  ): () => void {
     super.on(name, callback);
+    return () => {
+      super.off(name, callback);
+    };
   }
 
   send<K extends keyof OBSWebsocketRequests>(
@@ -72,5 +75,10 @@ export class OBSWebsocket extends EventEmitter {
         ...data,
       })
     );
+  }
+
+  destroy() {
+    this.ws.close();
+    super.destroy();
   }
 }

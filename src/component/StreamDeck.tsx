@@ -1,14 +1,9 @@
-import React from "react";
-import { useScenes } from "./OBSProvider";
-import { SceneSwitcher } from "./buttons/SceneSwitcher";
+import React, { Children, ReactNode } from "react";
 
-export function StreamDeck() {
-  const scenes = useScenes();
+export function StreamDeck({children}: {children: ReactNode}) {
   return (
     <div className="grid">
-      {scenes.map((scene) => (
-        <SceneSwitcher key={scene.name} scene={scene.name} />
-      ))}
+      {children}
     </div>
   );
 }

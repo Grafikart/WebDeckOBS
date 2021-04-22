@@ -19,4 +19,8 @@ export class EventEmitter {
     const listeners = this.listeners[name] || [];
     listeners.forEach((l) => l(data));
   }
+
+  public destroy() {
+    this.listeners = {};
+  }
 }

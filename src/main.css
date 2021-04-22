@@ -1,10 +1,10 @@
 :root {
-  --blue: #4A8CDA;
-  --red: #E04F60;
-  --yellow: #D99A51;
-  --purple: #6448B1;
-  --green: #72C834;
-  --grey: #332E59;
+  --blue: #4a8cda;
+  --red: #e04f60;
+  --yellow: #d99a51;
+  --purple: #6448b1;
+  --green: #72c834;
+  --grey: #332e59;
 }
 
 body {
@@ -12,7 +12,7 @@ body {
   margin: 0;
   background-color: #272042;
   font-size: 40px;
-  color: #FFF;
+  color: #fff;
   font-family: sans-serif;
   font-weight: bold;
 }
@@ -31,6 +31,10 @@ body {
 }
 
 .button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: var(--grey);
   border: none;
   border-radius: 10px;
@@ -38,4 +42,13 @@ body {
   font-weight: inherit;
   font-size: 20px;
   cursor: pointer;
+  transition: 0.3s;
+  outline: none;
+  padding: 16px 8px;
+}
+
+.button ion-icon {
+  height: 100%;
+  display: block;
+  font-size: 40px;
 }

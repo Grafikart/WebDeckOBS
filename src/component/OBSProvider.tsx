@@ -32,6 +32,10 @@ export function useScenes() {
   return useContext(OBSContext).scenes;
 }
 
+export function useScene(sceneName: string) {
+  return useContext(OBSContext).scenes.find((s) => s.name === sceneName);
+}
+
 export function useCurrentScene() {
   return useContext(OBSContext).currentScene;
 }
@@ -49,17 +53,24 @@ export function OBSContextProvider({
   const [currentScene, setCurrentScene] = useState<string>("");
   const obsRef = useRef<OBSWebsocket>(new OBSWebsocket());
 
-  useAsyncEffect(async function () {
+  useEffect(function () {
     const obs = obsRef.current;
-    await obs.connect(hostname, password);
-    obs.send("GetSceneList", {}, (data) => {
-      setScenes(data.scenes);
-      setCurrentScene(data["current-scene"]);
-    });
-    obs.on("SwitchScenes", (data) => {
+    const onSwitchScene = (data: { "scene-name": string }) => {
       setCurrentScene(data["scene-name"]);
+    };
+    obs.connect(hostname, password).then(() => {
+      obs.send("GetSceneList", {}, (data) => {
+        setScenes(data.scenes);
+        setCurrentScene(data["current-scene"]);
+      });
     });
-  });
+
+    obs.on("SwitchScenes", onSwitchScene);
+
+    return () => {
+      obs.off("SwitchScenes", onSwitchScene);
+    };
+  }, []);
 
   return (
     <OBSContext.Provider value={{ scenes, obsRef, currentScene }}>
