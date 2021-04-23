@@ -35,6 +35,7 @@ export class OBSWebsocket extends EventEmitter {
       };
       self.ws.onerror = (evt) => {
         reject(evt);
+        self.emit("Error", evt);
       };
       self.ws.onmessage = (evt) => {
         const data = JSON.parse(evt.data);
@@ -52,11 +53,8 @@ export class OBSWebsocket extends EventEmitter {
   on<K extends keyof OBSWebsocketResponses>(
     name: K,
     callback: (data: OBSWebsocketResponses[K]) => void
-  ): () => void {
-    super.on(name, callback);
-    return () => {
-      super.off(name, callback);
-    };
+  ) {
+    return super.on(name, callback);
   }
 
   send<K extends keyof OBSWebsocketRequests>(

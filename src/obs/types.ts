@@ -22,9 +22,9 @@ export enum OBSWebsocketStatuses {
 }
 
 interface OBSWebsocketDefaultResponse {
-  status: OBSWebsocketStatuses;
+  status?: OBSWebsocketStatuses;
   error?: string;
-  ["message-id"]: string;
+  "message-id"?: string;
 }
 
 interface OBSMediaResponse {
@@ -34,6 +34,8 @@ interface OBSMediaResponse {
 
 export interface OBSWebsocketResponses {
   Authenticate: OBSWebsocketDefaultResponse;
+  Exiting: OBSWebsocketDefaultResponse;
+  Error: OBSWebsocketDefaultResponse;
   SetCurrentTransition: OBSWebsocketDefaultResponse;
   SetCurrentScene: OBSWebsocketDefaultResponse;
   RestartMedia: OBSWebsocketDefaultResponse;

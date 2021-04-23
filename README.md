@@ -35,3 +35,13 @@ Le bouton tchat permet de masquer ou d'afficher le tchat au travers d'un systèm
 ### Position de la webcam
 
 Le système prévoit 3 positions pour la caméra (gauche, droite et zoomée). Pour gérer ces 3 positions vous devez utiliser le système de filtre comme vu précédemment avec 3 filtres `default`, `zoom` et `left` qui doivent être placés sur la scène `Stream`.
+
+## FAQ 
+
+**Pourquoi avoir écrit `self = this` ?**
+
+Je cible un ipad qui est bloqué sur ios 10.3.3 et il ne supporte pas les fonctions asynchrones fléchées.
+
+**Pourquoi ne pas utiliser l'API Crypto du navigateur pour le SHA256 ?**
+
+L'API Crypto ne peut être utilisé depuis un contexte HTTP. Vu que obs-websocket ne supporte pas les websockets sécurisés, on est obligé de charger la page en HTTP (on ne peut pas se connecter en websocket non sécurisé depuis une page chargée en HTTPS).

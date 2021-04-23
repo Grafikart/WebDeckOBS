@@ -11,6 +11,7 @@ import { FilterToggle } from "./component/buttons/FilterToggle";
 import { TransitionUpdater } from "./component/TransitionUpdater";
 import { Buttons } from "./component/buttons/Buttons";
 import { Row } from "./component/Row";
+import { RefreshButton } from "./component/RefreshButton";
 
 const url = new URL(window.location.href);
 const host = url.searchParams.get("host") || "192.168.0.50:4444";
@@ -51,6 +52,7 @@ ReactDOM.render(
         </Row>
         <TransitionUpdater />
       </StreamDeck>
+      <RefreshButton />
     </OBSContextProvider>
   </React.StrictMode>,
   document.getElementById("root")

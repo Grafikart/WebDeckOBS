@@ -5,9 +5,12 @@ interface Listeners {
 export class EventEmitter {
   private listeners: Listeners = {};
 
-  public on(name: string, callback: Function) {
+  public on(name: string, callback: Function): () => void {
     const listeners = this.listeners[name] || [];
     this.listeners[name] = [...listeners, callback];
+    return () => {
+      this.off(name, callback);
+    };
   }
 
   public off(name: string, callback: Function) {
