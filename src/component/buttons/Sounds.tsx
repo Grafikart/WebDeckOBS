@@ -1,28 +1,44 @@
 import React, { useEffect, useState } from "react";
-import { useObs, useScene } from "../OBSProvider";
+import { useObs, useSources } from "../OBSProvider";
 import { Button, ButtonColors } from "./Button";
+import { Icon, Icons } from "../Icon";
+import { images } from "../../images";
+
+export interface SoundsProps {
+  scene: string;
+  group?: string;
+  icon?: Icons;
+}
 
 /**
  * Crée un bouton pour chaque son présent dans la scène passée en paramètre
- *
- * @param scene Scène contenant les sons à lancer
  */
-export function Sounds({ scene }: { scene: string }) {
-  const sources = useScene(scene)?.sources || [];
+export function Sounds({ scene, group, icon }: SoundsProps) {
+  const sources = useSources(scene, group);
   return (
     <>
       {sources.map((source) => (
-        <Sound name={source.name} key={source.name} />
+        <Sound name={source.name} key={source.name} icon={icon} />
       ))}
     </>
   );
 }
 
-export function Sound({ name }: { name: string }) {
+export function Sound({
+  name,
+  icon = Icons.sound,
+}: {
+  name: string;
+  icon?: Icons;
+}) {
   const obs = useObs();
   const [isPlaying, setIsPlaying] = useState(false);
+
   const playSound = () => {
-    obs.send("RestartMedia", { sourceName: name });
+    obs.send("SetSceneItemProperties", {
+      item: name,
+      visible: !isPlaying,
+    });
   };
 
   useEffect(() => {
@@ -35,6 +51,10 @@ export function Sound({ name }: { name: string }) {
     const offEnded = obs.on("MediaEnded", (data) => {
       if (data.sourceName === name) {
         setIsPlaying(false);
+        obs.send("SetSceneItemProperties", {
+          item: name,
+          visible: false,
+        });
       }
     });
 
@@ -44,13 +64,16 @@ export function Sound({ name }: { name: string }) {
     };
   });
 
+  const image = images[name];
+
   return (
     <Button
-      color={isPlaying ? ButtonColors.green : ButtonColors.blue}
+      color={isPlaying ? ButtonColors.green : ButtonColors.purple}
       onClick={playSound}
     >
-      <ion-icon name="musical-note-outline" />
-      {name}
+      <Icon name={icon} />
+      <span>{name}</span>
+      <img src={image} alt="" />
     </Button>
   );
 }

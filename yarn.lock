@@ -212,6 +212,11 @@
     "@babel/helper-validator-identifier" "^7.12.11"
     to-fast-properties "^2.0.0"
 
+"@stencil/core@^2.5.0":
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-2.5.2.tgz#ad00d495ee37bbed4044524d59c7f22de15ab4a7"
+  integrity sha512-bgjPXkSzzg1WnTgVUm6m5ZzpKt602WmA/QljODAW1xVN40OHJdbGblzF/F6MFzqv2c5Cy30CB41arc8qADIdcQ==
+
 "@types/prop-types@*":
   version "15.7.3"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
@@ -535,6 +540,13 @@ inherits@2:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
+ionicons@^5.5.1:
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-5.5.1.tgz#c337b2a0871c18910dea5c72384b0f0a393abf15"
+  integrity sha512-1auVisfaXmkmxINer8Q3kJGHP1vSxk86hf7By95eJ+Av9+oBcNuAEBfSe3jaMaGRVxVw8U/2j23MFq7R3c0HPg==
+  dependencies:
+    "@stencil/core" "^2.5.0"
+
 is-core-module@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.2.0.tgz#97037ef3d52224d85163f5597b2b63d9afed981a"
@@ -570,6 +582,11 @@ jsonfile@^4.0.0:
   integrity sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=
   optionalDependencies:
     graceful-fs "^4.1.6"
+
+jssha@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/jssha/-/jssha-3.2.0.tgz#88ec50b866dd1411deaddbe6b3e3692e4c710f16"
+  integrity sha512-QuruyBENDWdN4tZwJbQq7/eAK85FqrI4oDbXjy5IBhYD+2pTJyBUWZe8ctWaCkrV0gy6AaelgOZZBMeswEa/6Q==
 
 locate-path@^5.0.0:
   version "5.0.0"
@@ -739,6 +756,11 @@ react-dom@^17.0.0:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
+
+react-icons@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.2.0.tgz#6dda80c8a8f338ff96a1851424d63083282630d0"
+  integrity sha512-rmzEDFt+AVXRzD7zDE21gcxyBizD/3NqjbX6cmViAgdqfJ2UiLer8927/QhhrXQV7dEj/1EGuOTPp7JnLYVJKQ==
 
 react-refresh@^0.9.0:
   version "0.9.0"

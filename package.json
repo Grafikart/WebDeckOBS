@@ -3,19 +3,22 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "serve": "vite preview",
-    "gh": "npm run build && gh-pages -d dist"
+    "gh": "npm run build && echo 'stream.droapp.com' > ./dist/CNAME && gh-pages -d dist"
   },
   "dependencies": {
+    "ionicons": "^5.5.1",
+    "jssha": "^3.2.0",
     "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react-dom": "^17.0.0",
+    "react-icons": "^4.2.0"
   },
   "devDependencies": {
-    "gh-pages": "^3.1.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@vitejs/plugin-react-refresh": "^1.3.1",
+    "gh-pages": "^3.1.0",
     "prettier": "^2.2.1",
     "typescript": "^4.1.2",
     "vite": "^2.1.5"

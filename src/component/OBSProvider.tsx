@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { OBSScene } from "../obs/types";
+import { OBSScene, OBSSource } from "../obs/types";
 import { OBSWebsocket } from "../obs/OBSWebsocket";
 import { useAsyncEffect } from "../utils/hooks";
 
@@ -34,6 +34,14 @@ export function useScenes() {
 
 export function useScene(sceneName: string) {
   return useContext(OBSContext).scenes.find((s) => s.name === sceneName);
+}
+
+export function useSources(sceneName: string, groupName?: string): OBSSource[] {
+  let sources = useScene(sceneName)?.sources || [];
+  if (groupName) {
+    sources = sources.find((s) => s.name === groupName)?.groupChildren || [];
+  }
+  return sources;
 }
 
 export function useCurrentScene() {

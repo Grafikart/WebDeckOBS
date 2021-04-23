@@ -21,10 +21,10 @@ export class OBSWebsocket extends EventEmitter {
     return new Promise<void>(function (resolve, reject) {
       self.ws = new WebSocket(`ws://${host}`);
       self.ws.onopen = () => {
-        self.send("GetAuthRequired", {}, async function (data) {
+        self.send("GetAuthRequired", {}, function (data) {
           const secretString = password + data.salt;
-          const secret = btoa(await sha256(secretString));
-          const auth = btoa(await sha256(secret + data.challenge));
+          const secret = btoa(sha256(secretString));
+          const auth = btoa(sha256(secret + data.challenge));
           self.send("Authenticate", { auth }, (data) => {
             if (data.status === OBSWebsocketStatuses.ERROR) {
               reject(data.error);

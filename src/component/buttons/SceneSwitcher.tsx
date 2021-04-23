@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, ButtonColors } from "./Button";
 import { useCurrentScene, useObs, useScenes } from "../OBSProvider";
+import { Icon, Icons } from "../Icon";
 
 interface SceneSwitcherProps {
   scene: string;
@@ -34,7 +35,7 @@ export function SceneSwitcher({ scene }: SceneSwitcherProps) {
       color={currentScene === scene ? ButtonColors.blue : undefined}
       onClick={changeScene}
     >
-      <ion-icon name="tv-outline" />
+      <Icon name={Icons.scene} />
       {scene}
     </Button>
   );

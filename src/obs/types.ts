@@ -2,8 +2,18 @@ export interface OBSWebsocketRequests {
   GetAuthRequired: {};
   Authenticate: { auth: string };
   GetSceneList: {};
-  SetCurrentScene: { ["scene-name"]: string };
+  SetCurrentScene: { "scene-name": string };
   RestartMedia: { sourceName: string };
+  SetCurrentTransition: { "transition-name": string };
+  SetSourceFilterVisibility: {
+    sourceName: string;
+    filterName: string;
+    filterEnabled: boolean;
+  };
+  SetSceneItemProperties: {
+    item: string;
+    visible: boolean;
+  };
 }
 
 export enum OBSWebsocketStatuses {
@@ -24,8 +34,11 @@ interface OBSMediaResponse {
 
 export interface OBSWebsocketResponses {
   Authenticate: OBSWebsocketDefaultResponse;
+  SetCurrentTransition: OBSWebsocketDefaultResponse;
   SetCurrentScene: OBSWebsocketDefaultResponse;
   RestartMedia: OBSWebsocketDefaultResponse;
+  SetSceneItemProperties: OBSWebsocketDefaultResponse;
+  SetSourceFilterVisibility: OBSWebsocketDefaultResponse;
   GetSceneList: {
     scenes: OBSScene[];
     ["current-scene"]: string;
@@ -41,6 +54,17 @@ export interface OBSWebsocketResponses {
   };
   MediaRestarted: OBSMediaResponse;
   MediaEnded: OBSMediaResponse;
+  SourceFilterVisibilityChanged: {
+    filterEnabled: boolean;
+    filterName: string;
+    sourceName: string;
+  } & OBSWebsocketDefaultResponse;
+  TransitionEnd: {
+    name: string;
+    type: string;
+    duration: number;
+    "to-scene": string;
+  } & OBSWebsocketDefaultResponse;
 }
 
 export interface OBSSource {
@@ -58,6 +82,7 @@ export interface OBSSource {
   volume: number;
   x: number;
   y: number;
+  groupChildren?: OBSSource[];
 }
 
 export interface OBSScene {
