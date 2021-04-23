@@ -7,6 +7,7 @@ import {
   IoSearchOutline,
   IoArrowBackCircleOutline,
   IoArrowForwardCircleOutline,
+  IoCameraOutline,
 } from "react-icons/io5";
 import { IconType } from "react-icons";
 
@@ -18,6 +19,7 @@ export enum Icons {
   zoom = "zoom",
   left = "left",
   right = "right",
+  camera = "camera",
 }
 
 export function Icon({ name }: { name: Icons }) {
@@ -36,6 +38,8 @@ export function Icon({ name }: { name: Icons }) {
       return <IoArrowBackCircleOutline />;
     case Icons.right:
       return <IoArrowForwardCircleOutline />;
+    case Icons.camera:
+      return <IoCameraOutline />;
   }
   return null;
 }

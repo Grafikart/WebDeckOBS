@@ -18,5 +18,5 @@ export function TransitionUpdater() {
     });
   }, []);
 
-  return <Button>Grey</Button>;
+  return null;
 }

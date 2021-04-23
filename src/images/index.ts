@@ -7,6 +7,7 @@ import Elevator from "./elevator.jpg";
 export const images: { [key: string]: string } = {
   "C'est nul": nulImage,
   Travail: travailImage,
+  "Travail termine": travailImage,
   "ah !": Denis,
   sad: Sad,
   Ascenseur: Elevator,

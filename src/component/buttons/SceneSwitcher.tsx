@@ -36,7 +36,7 @@ export function SceneSwitcher({ scene }: SceneSwitcherProps) {
       onClick={changeScene}
     >
       <Icon name={Icons.scene} />
-      {scene}
+      <span>{scene}</span>
     </Button>
   );
 }

@@ -25,7 +25,7 @@ export function Button({
         }
       : undefined;
   return (
-    <button className="button" style={style} {...props}>
+    <button className={`button is-${color}`} style={style} {...props}>
       {children}
     </button>
   );
