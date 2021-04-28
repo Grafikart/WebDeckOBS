@@ -88,8 +88,8 @@ export function OBSContextProvider({
 
     connect();
 
-    // window.addEventListener("focus", connect);
-    // window.addEventListener("blur", disconnect);
+    window.addEventListener("focus", connect);
+    window.addEventListener("blur", disconnect);
 
     obs.on("SwitchScenes", onSwitchScene);
 
