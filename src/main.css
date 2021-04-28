@@ -143,3 +143,25 @@ body {
   height: 30px;
   margin-right: 16px;
 }
+.modal small {
+  font-weight: normal;
+  font-size: 22px;
+}
+.spaced {
+  display: flex;
+}
+.spaced > * + * {
+  margin-left: 8px;
+}
+
+input {
+  border-radius: 4px;
+  font-size: 18px;
+  padding: 0 8px;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #FFF;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  border-left: 1px solid rgba(255, 255, 255, .05);
+  border-right: 1px solid rgba(255, 255, 255, .05);
+}

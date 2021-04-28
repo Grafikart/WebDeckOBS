@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "serve": "vite preview",
     "gh": "npm run build && echo 'stream.droapp.com' > ./dist/CNAME && gh-pages -d dist"
   },

@@ -75,8 +75,12 @@ export class OBSWebsocket extends EventEmitter {
     );
   }
 
-  destroy() {
+  close() {
     this.ws.close();
+  }
+
+  destroy() {
+    this.close();
     super.destroy();
   }
 }
