@@ -25,9 +25,9 @@ ReactDOM.render(
           <ScenesSwitcher />
         </Row>
         <Row>
-          <FilterCycle scene="📦 Tchat">
-            <Icon name={Icons.tchat} />
-            <span>Tchat</span>
+          <FilterCycle scene="Preview">
+            <Icon name={Icons.image} />
+            <span>Preview</span>
           </FilterCycle>
           <Buttons>
             <FilterToggle scene="Stream" filter="zoom">
