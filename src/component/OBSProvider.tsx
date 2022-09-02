@@ -10,12 +10,7 @@ import React, {
 import { OBSScene, OBSSource } from "../obs/types";
 import { OBSWebsocket } from "../obs/OBSWebsocket";
 import { Icon, Icons } from "./Icon";
-
-interface OBSContextInterface {
-  scenes: OBSScene[];
-  obsRef: React.MutableRefObject<OBSWebsocket>;
-  currentScene: string;
-}
+import { OBSEventTypes } from 'obs-websocket-js'
 
 interface OBSContextProviderProps {
   children: ReactNode;
@@ -23,8 +18,9 @@ interface OBSContextProviderProps {
   password: string;
 }
 
-const OBSContext = createContext<OBSContextInterface>({
-  scenes: [],
+const OBSContext = createContext({
+  scenes: [] as OBSScene[],
+  sources: [] as OBSSource[],
   obsRef: { current: new OBSWebsocket() },
   currentScene: "",
 });
@@ -37,12 +33,8 @@ export function useScene(sceneName: string): OBSScene | undefined {
   return useContext(OBSContext).scenes.find((s) => s.name === sceneName);
 }
 
-export function useSources(sceneName: string, groupName?: string): OBSSource[] {
-  let sources = useScene(sceneName)?.sources || [];
-  if (groupName) {
-    sources = sources.find((s) => s.name === groupName)?.groupChildren || [];
-  }
-  return sources;
+export function useSources(groupName?: string): OBSSource[] {
+  return useContext(OBSContext).sources.filter(s => s.groupName === groupName);
 }
 
 export function useCurrentScene(): string {
@@ -59,24 +51,29 @@ export function OBSContextProvider({
   password,
 }: OBSContextProviderProps) {
   const [scenes, setScenes] = useState<OBSScene[]>([]);
+  const [sources, setSources] = useState<OBSSource[]>([]);
   const [currentScene, setCurrentScene] = useState<string>("");
   const obsRef = useRef<OBSWebsocket>(new OBSWebsocket());
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(function () {
     const obs = obsRef.current;
-    const onSwitchScene = (data: { "scene-name": string }) => {
-      setCurrentScene(data["scene-name"]);
+    const onSwitchScene = (data: OBSEventTypes['CurrentProgramSceneChanged']) => {
+      setCurrentScene(data.sceneName);
+      setSources([])
     };
     const connect = () => {
       setError(null);
+      setSources([]);
       obs
         .connect(hostname, password)
         .then(() => {
-          obs.send("GetSceneList", {}, (data) => {
-            setScenes(data.scenes);
-            setCurrentScene(data["current-scene"]);
-          });
+          if (scenes.length === 0) {
+            obs.send("GetSceneList", undefined, (data) => {
+              setScenes(data.scenes as OBSScene[]);
+              setCurrentScene(data.currentProgramSceneName);
+            });
+          }
         })
         .catch((err) => {
           setError(err);
@@ -91,17 +88,17 @@ export function OBSContextProvider({
     window.addEventListener("focus", connect);
     window.addEventListener("blur", disconnect);
 
-    obs.on("SwitchScenes", onSwitchScene);
+    obs.on("CurrentProgramSceneChanged", onSwitchScene);
 
     return () => {
-      obs.off("SwitchScenes", onSwitchScene);
+      obs.off("CurrentProgramSceneChanged", onSwitchScene);
       window.removeEventListener("focus", connect);
       window.removeEventListener("blur", disconnect);
     };
   }, []);
 
   return (
-    <OBSContext.Provider value={{ scenes, obsRef, currentScene }}>
+    <OBSContext.Provider value={{ scenes, obsRef, currentScene, sources }}>
       {error && (
         <ReconnectModal
           hostname={hostname}

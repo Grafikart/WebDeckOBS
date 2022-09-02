@@ -10,16 +10,19 @@
   "dependencies": {
     "ionicons": "^5.5.1",
     "jssha": "^3.2.0",
+    "obs-websocket-js": "^5.0.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-icons": "^4.2.0"
   },
   "devDependencies": {
+    "@types/debug": "^4.1.7",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@vitejs/plugin-react-refresh": "^1.3.1",
     "gh-pages": "^3.1.0",
     "prettier": "^2.2.1",
+    "type-fest": "^2.19.0",
     "typescript": "^4.1.2",
     "vite": "^2.1.5"
   }

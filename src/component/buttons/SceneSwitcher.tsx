@@ -7,18 +7,14 @@ interface SceneSwitcherProps {
   scene: string;
 }
 
-interface ScenesSwitcherProps {
-  ignore?: string;
-}
-
-export function ScenesSwitcher({ ignore = "📦" }: ScenesSwitcherProps) {
+export function ScenesSwitcher() {
   const scenes = useScenes();
   return (
     <>
       {scenes
-        .filter((s) => !s.name.startsWith(ignore))
+        .filter((s) => s.sceneName.match(/^[a-z0-9].*$/i))
         .map((scene) => (
-          <SceneSwitcher key={scene.name} scene={scene.name} />
+          <SceneSwitcher key={scene.sceneName} scene={scene.sceneName} />
         ))}
     </>
   );
@@ -28,7 +24,7 @@ export function SceneSwitcher({ scene }: SceneSwitcherProps) {
   const currentScene = useCurrentScene();
   const obs = useObs();
   const changeScene = () => {
-    obs.send("SetCurrentScene", { ["scene-name"]: scene });
+    obs.send("SetCurrentProgramScene", { sceneName: scene });
   };
   return (
     <Button

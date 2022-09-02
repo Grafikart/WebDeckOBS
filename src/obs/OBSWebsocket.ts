@@ -1,86 +1,64 @@
-import {
-  OBSWebsocketRequests,
-  OBSWebsocketResponses,
-  OBSWebsocketStatuses,
-} from "./types";
-import { sha256 } from "../utils/crypto";
-import { EventEmitter } from "../utils/EventEmitter";
+import OBSWebSocket, { OBSEventTypes, OBSRequestTypes, OBSResponseTypes } from 'obs-websocket-js'
 
-let messageId = 1;
-
-function generateMessageId() {
-  return messageId++;
+type QueueItem<K extends keyof OBSRequestTypes> = {
+  request: K,
+  data?: OBSRequestTypes[K],
+  callback?: (data: OBSResponseTypes[K]) => void
 }
+type QueueItems = QueueItem<keyof OBSRequestTypes>[]
 
-export class OBSWebsocket extends EventEmitter {
-  private ws!: WebSocket;
-  private messageCallbacks: { [key: string]: Function } = {};
+export class OBSWebsocket {
+  private client: OBSWebSocket
+  private connected = false
+  private queue = [] as QueueItems // Remember event listeners (allow listening before connection)
+
+  constructor () {
+    this.client = new OBSWebSocket()
+  }
 
   connect(host: string = "localhost:4444", password: string = "") {
-    const self = this;
-    return new Promise<void>(function (resolve, reject) {
-      self.ws = new WebSocket(`ws://${host}`);
-      self.ws.onopen = () => {
-        self.send("GetAuthRequired", {}, function (data) {
-          const secretString = password + data.salt;
-          const secret = btoa(sha256(secretString));
-          const auth = btoa(sha256(secret + data.challenge));
-          self.send("Authenticate", { auth }, (data) => {
-            if (data.status === OBSWebsocketStatuses.ERROR) {
-              reject(data.error);
-            }
-            resolve();
-          });
-        });
-      };
-      self.ws.onerror = (evt) => {
-        reject(evt);
-        self.emit("Error", evt);
-      };
-      self.ws.onmessage = (evt) => {
-        const data = JSON.parse(evt.data);
-        const callback = self.messageCallbacks[data["message-id"]];
-        if (callback) {
-          callback(data);
-        }
-        if (data["update-type"]) {
-          self.emit(data["update-type"], data);
-        }
-      };
-    });
+    this.connected = false
+    return this.client.connect(`ws://${host}`, password, {rpcVersion: 1}).then(() => {
+      this.connected = true
+      for (let item of this.queue) {
+        this.send(item.request, item.data, item.callback)
+      }
+      this.queue = [];
+    })
   }
 
-  on<K extends keyof OBSWebsocketResponses>(
+  on<K extends keyof OBSEventTypes>(
     name: K,
-    callback: (data: OBSWebsocketResponses[K]) => void
-  ) {
-    return super.on(name, callback);
+    callback: (data: OBSEventTypes[K]) => void
+  ): () => void {
+    this.client.on(name, callback as any);
+    return () => this.client.off(name, callback as any);
   }
 
-  send<K extends keyof OBSWebsocketRequests>(
+  off<K extends keyof OBSEventTypes>(
+    name: K,
+    callback: (data: OBSEventTypes[K]) => void
+  ) {
+    return this.client.off(name, callback as any);
+  }
+
+  send<K extends keyof OBSRequestTypes>(
     request: K,
-    data?: OBSWebsocketRequests[K],
-    callback?: (data: OBSWebsocketResponses[K]) => void
+    data?: OBSRequestTypes[K],
+    callback?: (data: OBSResponseTypes[K]) => void
   ): void {
-    const messageId = generateMessageId();
-    if (callback) {
-      this.messageCallbacks[messageId] = callback;
-    }
-    this.ws.send(
-      JSON.stringify({
-        "request-type": request,
-        "message-id": messageId.toString(),
-        ...data,
+    if (this.connected) {
+      this.client.call(request, data).then(r => {
+        if (callback) {
+          callback(r)
+        }
       })
-    );
+    } else {
+      this.queue.push({request, data, callback: callback as any})
+    }
   }
 
   close() {
-    this.ws.close();
-  }
-
-  destroy() {
-    this.close();
-    super.destroy();
+    this.client.disconnect()
   }
 }

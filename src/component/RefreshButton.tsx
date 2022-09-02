@@ -11,16 +11,9 @@ export function RefreshButton() {
   const [online, setOnline] = useState(true);
 
   useEffect(() => {
-    const off1 = obs.on("Exiting", () => {
+    return obs.on("ExitStarted", () => {
       setOnline(false);
     });
-    const off2 = obs.on("Error", () => {
-      setOnline(false);
-    });
-    return () => {
-      off1();
-      off2();
-    };
   }, []);
 
   if (online) {

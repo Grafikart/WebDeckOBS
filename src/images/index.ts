@@ -10,5 +10,5 @@ export const images: { [key: string]: string } = {
   "Travail termine": travailImage,
   "ah !": Denis,
   sad: Sad,
-  Ascenseur: Elevator,
+  ['m - Ascenseur']: Elevator,
 };
