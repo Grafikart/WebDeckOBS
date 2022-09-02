@@ -53,7 +53,6 @@ export function Sound ({
 
   useEffect(() => {
     const offRestart = obs.on('MediaInputPlaybackStarted', (data) => {
-      console.log(data.inputName)
       if (data.inputName === name) {
         setIsPlaying(true);
       }
@@ -65,7 +64,7 @@ export function Sound ({
         obs.send('SetSceneItemEnabled', {
           sceneName: scene,
           sceneItemId: id,
-          sceneItemEnabled: !isPlaying
+          sceneItemEnabled: false
         });
       }
     });
